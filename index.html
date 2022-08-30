@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Planning Corazon</title>
+    <style>
+        .test{
+            background-color: red;
+            width:50px;
+            height:50px;
+        }
+
+        #choix {
+            position:relative;
+            display: inline-block;
+        }
+
+        #button {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        button {
+            display: inline-block;
+            padding:30px;
+        }
+
+        #result {
+            display: inline-block;
+        }
+
+        .cours {
+            position: absolute;
+            width:95px;
+            height:40px;
+            background-color: black;
+            z-index = 999;
+            opacity: 0;
+            cursor:pointer;
+        }
+
+        .cours-speciaux {
+            height:90px;
+        }
+
+        .cours:hover{
+            opacity:1;
+        }
+
+        .active{
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="choix" width="700px">
+        <img src="choix-fr.jpg" width="700px"/>
+    </div>
+    <div id="button">
+        <button onclick="report()">Faire une capture</button>
+    </div>
+    <div id="result" width="700px"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function report() {
+            html2canvas(choix).then(function(canvas) {
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(canvas);
+            });
+        }
+
+        var listeDesCours = [
+            [62, 178], [170, 178], [278, 178], [490, 178],
+            [62, 228], [170, 228], [278, 228], [490, 228],
+            [62, 308], [170, 308], [278, 308], [380, 308], [490, 308],
+            [62, 358], [170, 358], [278, 358], [380, 358], [490, 358],
+            [62, 408], [170, 408], [278, 408], [380, 408], [490, 408],
+
+            [62, 590], [170, 590], [278, 590], [490, 590],
+            [62, 640], [170, 640], [278, 640], [490, 640],
+            [62, 720], [170, 720], [278, 720], [380, 720], [490, 720],
+            [62, 770], [170, 770], [278, 770], [380, 770], [490, 770],
+            
+        ];
+
+        var listeDeCoursSpeciaux = [
+            [590, 178], [590, 308], [590, 590], [590, 720],
+        ];
+
+        var choix = document.getElementById('choix');
+        var resultDiv = document.getElementById('result');
+
+        for (const cours of listeDesCours) {
+            let coursDiv = document.createElement('div');
+            coursDiv.classList.add('cours');
+            coursDiv.style.left = cours[0]+'px';
+            coursDiv.style.top = cours[1]+'px';
+            coursDiv.onclick = triggerOpacity;
+
+            choix.appendChild(coursDiv);
+        }
+
+        for (const cours of listeDeCoursSpeciaux) {
+            let coursDiv = document.createElement('div');
+            coursDiv.classList.add('cours');
+            coursDiv.classList.add('cours-speciaux');
+            coursDiv.style.left = cours[0]+'px';
+            coursDiv.style.top = cours[1]+'px';
+            coursDiv.onclick = triggerOpacity;
+
+            choix.appendChild(coursDiv);
+        }
+
+        function triggerOpacity(e)
+        {
+            let divTarget = e.target;
+            let isActive = divTarget.classList.contains('active');
+
+            if(isActive) {
+                divTarget.classList.remove('active');
+            } else {
+                divTarget.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
